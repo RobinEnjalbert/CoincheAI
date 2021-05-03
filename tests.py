@@ -2,10 +2,11 @@
 
 import unittest
 
-from MyPackage.Card import Card
-from MyPackage.Deck import Deck
-from MyPackage.Player import Player
-from MyPackage.Team import Team
+from src.Card import Card
+from src.Deck import Deck
+from src.Hand import Hand
+from src.Player import Player
+from src.Team import Team
 
 
 class TestCard(unittest.TestCase):
@@ -13,7 +14,7 @@ class TestCard(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_create_card_correct(self):
+    def test_create_card(self):
         """ Test correct card creation """
         card = Card(0, 0)
         self.assertEqual(card.getValue(), 0)
@@ -68,25 +69,88 @@ class TestDeck(unittest.TestCase):
     def test_shuffle_deck(self):
         """ Test deck shuffle """
         deck = Deck()
+        previous_deck = deck.cardList.copy()
         deck.shuffle()
-        test = False
-        for i in range(7):
-            if deck.cardList[i].getColor() != 0:
-                test = True
-        self.assertEqual(test, True)
+        shuffled_deck = deck.cardList.copy()
+        same, i = True, 0
+        while same and i < 32:
+            if previous_deck[i] != shuffled_deck[i]:
+                same = False
+            i += 1
+        self.assertEqual(same, False)
 
     def test_distribute_deck(self):
         """ Test deck distribution """
         deck = Deck()
-        hands = deck.distribute(two=1)
+        hands = deck.distribute()
         for hand in hands:
             self.assertEqual(len(hand), 8)
         self.assertEqual(len(deck.cardList), 0)
 
     def test_distribute_deck_wrong_two(self):
-        """ Test test distribution with wrong two value """
+        """ Test distribution with wrong two value """
         deck = Deck()
         self.assertRaises(ValueError, deck.distribute, 3)
+
+
+class TestHand(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_hand(self):
+        """ Test correct hand creation """
+        deck = Deck()
+        hands = deck.distribute()
+        hand = Hand(hands[0])
+        self.assertEqual(hand.hand, hands[0])
+        self.assertEqual(hand.played, [1 for _ in range(8)])
+
+    def test_create_hand_wrong_card_type(self):
+        """ Test hand creation with wrong card type """
+        cards = [(v_idx, c_idx) for c_idx in range(2) for v_idx in range(4)]
+        self.assertRaises(TypeError, Hand, cards)
+
+    def test_create_hand_wrong_list_type(self):
+        """ Test hand creation with wrong card type """
+        cards = (Card(v_idx, c_idx) for c_idx in range(2) for v_idx in range(4))
+        self.assertRaises(TypeError, Hand, cards)
+
+    def test_create_hand_wrong_list_size(self):
+        """ Test hand creation with wrong card type """
+        cards = [Card(v_idx, c_idx) for c_idx in range(2) for v_idx in range(3)]
+        self.assertRaises(ValueError, Hand, cards)
+
+    def test_sort_hand(self):
+        """ Test correct hand sorting """
+        deck = Deck()
+        hands = deck.distribute()
+        hand = Hand(hands[0])
+        hand.sort('Spade')
+        expected_hand = '[7 of Club, 8 of Club, 9 of Club, Jack of Diamond, Queen of Diamond, Queen of Spade, ' \
+                        'King of Spade, Jack of Spade]'
+        self.assertEqual(str(hand), expected_hand)
+
+    def test_sort_wrong_trump(self):
+        """ Test hand sorting with wrong trump value """
+        deck = Deck()
+        hands = deck.distribute()
+        hand = Hand(hands[0])
+        self.assertRaises(ValueError, hand.sort, 'trump')
+
+    def test_play_card(self):
+        """ Test correct card played """
+        deck = Deck()
+        hands = deck.distribute()
+        hand = Hand(hands[0])
+        hand.play(0)
+        self.assertEqual(hand.played[0], 0)
+
+    def test_play_card_wrong_value(self):
+        deck = Deck()
+        hands = deck.distribute()
+        hand = Hand(hands[0])
+        self.assertRaises(ValueError, hand.play, 8)
 
 
 class TestPlayer(unittest.TestCase):
