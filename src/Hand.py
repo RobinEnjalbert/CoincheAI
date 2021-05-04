@@ -1,5 +1,5 @@
-from .constants import STRENGTH, CARD_COLORS
-from .Card import Card
+from constants import STRENGTH, CARD_COLORS, TRUMPS
+from Card import Card
 
 
 class Hand:
@@ -12,8 +12,8 @@ class Hand:
         self.hand = cards
         self.played = [1 for _ in range(8)]
 
-    def sort(self, trump):
-        if trump not in CARD_COLORS:
+    def sort(self, trump='NT'):
+        if trump not in TRUMPS:
             raise ValueError("[HAND.PY] Given trump '{}' to sort hand does not exist.".format(trump))
         sorted_hand = []
         # Sort by color

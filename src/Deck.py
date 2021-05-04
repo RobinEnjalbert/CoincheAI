@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
 import random
-from .Card import Card
+from Card import Card
 
 
 class Deck:

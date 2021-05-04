@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-from .Player import Player
+from Player import Player
 
 
 class Team:
@@ -16,6 +16,7 @@ class Team:
         assert isinstance(player2, Player), "[TEAM.PY] Second player must be an object of type Player."
         self.players = [player1, player2]
         self.score = 0
+        self.won_cards = []
 
     def addPoints(self, points):
         """ Add points to the team's score """
