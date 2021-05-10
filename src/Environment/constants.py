@@ -11,5 +11,5 @@ STRENGTH = {'basic': (0, 1, 2, 6, 3, 4, 5, 7),
 POINTS = {'standard': (0, 0, 0, 10, 2, 3, 4, 11),
           'trump': (0, 0, 14, 10, 20, 3, 4, 11),
           'belote': 20}
-CONTRACTS = (80, 90, 100, 110, 120, 130, 140, 150, 160, 'capot', 'generale')
+CONTRACTS = ('pass', 80, 90, 100, 110, 120, 130, 140, 150, 160, 'capot', 'generale')
 TRUMPS = ('Club', 'Diamond', 'Heart', 'Spade', 'AT', 'NT')

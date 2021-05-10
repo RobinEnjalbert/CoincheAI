@@ -21,9 +21,9 @@ class Coinche:
         self.deck.shuffle()
         while self.scores[0] < 1000 and self.scores[1] < 1000:
             self.distributeCards()
-            bidding = Bidding(self.players, self.teams, self.start_player)
-            contract, bettor = bidding.play_bidding()
-            if contract is None:
+            bidding_turn = Bidding(self.players, self.teams, self.start_player)
+            bidding, bidding_team = bidding_turn.play()
+            if bidding_team is None:
                 self.pickupPlayersCards()
             else:
                 # TODO: Round
