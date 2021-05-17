@@ -1,5 +1,5 @@
-from constants import STRENGTH, CARD_COLORS, TRUMPS
-from Card import Card
+from .constants import STRENGTH, CARD_COLORS, TRUMPS
+from .Card import Card
 
 
 class Hand:
@@ -42,6 +42,7 @@ class Hand:
         self.played[idx] = 0
 
     def __str__(self):
+        print(self.hand)
         return str(self.hand)
 
     def __repr__(self):

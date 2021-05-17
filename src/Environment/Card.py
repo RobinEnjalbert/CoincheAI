@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-from constants import CARD_VALUES, CARD_COLORS
+from .constants import CARD_VALUES, CARD_COLORS
 
 
 class Card:

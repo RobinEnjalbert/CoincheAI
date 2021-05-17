@@ -103,6 +103,7 @@ class TestHand(unittest.TestCase):
         deck = Deck()
         hands = deck.distribute()
         hand = Hand(hands[0])
+        print(hand.hand)
         self.assertEqual(hand.hand, hands[0])
         self.assertEqual(hand.played, [1 for _ in range(8)])
 

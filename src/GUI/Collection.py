@@ -1,9 +1,10 @@
 import pygame
 from pygame.locals import *
-from locals import *
+from constants import *
 import os
 
-class Skins:
+
+class Collection:
 
     def __init__(self):
         img_path = os.path.realpath(os.path.dirname(__file__) + '../../../images/')
