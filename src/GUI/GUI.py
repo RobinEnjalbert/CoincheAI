@@ -4,16 +4,6 @@ from .Collection import Collection
 from .constants import *
 
 
-class InterfaceError(Exception):
-
-    def __init__(self, cause, details=""):
-        self.cause = cause
-        self.details = details
-
-    def __repr__(self):
-        return self.cause + self.details
-
-
 class GUI:
 
     def __init__(self):
@@ -43,3 +33,11 @@ class GUI:
                 else:
                     self.display.blit(pygame.transform.rotate(self.images.back, 90), position)
         pygame.display.update()
+
+    def choose_bidding(self, bidding):
+        # TODO
+        pass
+
+    def update_bidding(self, player_name, bidding):
+        # TODO
+        pass

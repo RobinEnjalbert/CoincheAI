@@ -1,11 +1,29 @@
+# -*- coding: utf8 -*-
+
 import numpy as np
 from .constants import STRENGTH, CARD_COLORS, TRUMPS
 from .Card import Card
 
 
 class Hand:
+    """
+        A hand is composed of the 8 cards given to a player.
+        Attributes:
+            hand = list of 8 cards
+            available = list of not played cards indices
+        Methods:
+            set() -> Give a new hand
+            get() -> Get the list of cards still in hand
+            sort(trump) -> Sort the hand according to the actual trump
+            play(idx) -> Update the not played cards list
+            str(), repr()
+        """
 
-    def __init__(self, cards):
+    def __init__(self):
+        self.__hand = []
+        self.__available = [i for i in range(8)]
+
+    def set(self, cards):
         if not isinstance(cards, list) or not isinstance(cards[0], Card):
             raise TypeError("[HAND.PY] The hand must be a list of Cards")
         if len(cards) != 8:
@@ -13,27 +31,27 @@ class Hand:
         self.__hand = cards
         self.__available = [i for i in range(8)]
 
-    def reset(self, cards):
-        self.__hand = cards
-        self.__available = [i for i in range(8)]
+    def get(self, full=False):
+        if full:
+            return self.__hand
+        else:
+            hand = np.array(self.__hand)
+            return hand[self.__available].tolist()
 
     def sort(self, trump='NT'):
         if trump not in TRUMPS:
             raise ValueError("[HAND.PY] Given trump '{}' to sort hand does not exist.".format(trump))
         sorted_hand = []
         # Sort by color
-        color_sort = {CARD_COLORS[0]: [],
-                      CARD_COLORS[1]: [],
-                      CARD_COLORS[2]: [],
-                      CARD_COLORS[3]: []}
+        color_sort = {CARD_COLORS[0]: [], CARD_COLORS[1]: [], CARD_COLORS[2]: [], CARD_COLORS[3]: []}
         for card in self.__hand:
-            color = CARD_COLORS[card.getColor()]
+            color = CARD_COLORS[card.get_color()]
             color_sort[color].append(card)
         # Sort each color by value
         for k in color_sort.keys():
             color = color_sort[k]
             strength = STRENGTH['basic'] if k != trump else STRENGTH['trump']
-            color_strength = [strength[card.getValue()] for card in color]
+            color_strength = [strength[card.get_value()] for card in color]
             for _ in range(len(color)):
                 idx = color_strength.index(min(color_strength))
                 sorted_hand.append(color[idx])
@@ -46,12 +64,8 @@ class Hand:
             raise ValueError("[HAND.PY] Idx must be in [0:7].")
         self.__available.remove(self.__available[idx])
 
-    def get(self):
-        hand = np.array(self.__hand)
-        return hand[self.__available]
-
     def __str__(self):
         return str(self.get())
 
     def __repr__(self):
-        return str(self.get())
+        return str(self)

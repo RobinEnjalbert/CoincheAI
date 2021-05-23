@@ -5,10 +5,14 @@ from .constants import CARD_VALUES, CARD_COLORS
 
 class Card:
     """
-    Card class: A card has a value and a color.
+    A card has a value and a color.
     Attributes:
         value = CARD_VALUES[index] with index in range [0,7]
         color = CARD_COLORS[index] with index in range [0,3]
+    Methods:
+        get_value() -> card value
+        get_color() -> card color
+        str(), repr(), eq(), ne()
     """
 
     def __init__(self, value_idx, color_idx):
@@ -23,10 +27,10 @@ class Card:
         self.__value = value_idx
         self.__color = color_idx
 
-    def getValue(self):
+    def get_value(self):
         return self.__value
 
-    def getColor(self):
+    def get_color(self):
         return self.__color
 
     def __str__(self):
@@ -34,8 +38,7 @@ class Card:
                                  CARD_COLORS[self.__color])
 
     def __repr__(self):
-        return "{} of {}".format(CARD_VALUES[self.__value],
-                                 CARD_COLORS[self.__color])
+        return str(self)
 
     def __eq__(self, card):
         assert isinstance(card, Card), "[CARD.PY] The card must be an object of type Card."

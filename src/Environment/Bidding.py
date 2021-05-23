@@ -1,31 +1,54 @@
+# -*- coding: utf8 -*-
+
 from constants import CONTRACTS, TRUMPS
 
 
 class Bidding:
 
-    def __init__(self, players, teams, start_player):
+    def __init__(self, players, teams, first_player, gui):
         self.players = players
         self.teams = teams
-        self.teams_id = {'Player0': 0, 'Player1': 1,
-                         'Player2': 0, 'Player3': 1}
-        self.start_player = start_player
-        self.start_team = self.teams_id[players[start_player].name]
-        self.bidding = {'contracts': None, 'trump': None}
-        self.bidding_history = []
+        self.teams_id = {teams[0].players[0].get_name(): 0, teams[1].players[0].get_name(): 1,
+                         teams[0].players[1].get_name(): 0, teams[1].players[1].get_name(): 1}
+        self.first_player = first_player
+        self.bidding = [None, None]
+        self.previous_bidding = []
+        self.gui = gui
 
-    def play(self):
+    def play_bidding(self):
         bidding_team = None
-        player_turn = self.start_player
+        player_turn = self.first_player
         passed = 0
         while passed != 4:
-            contract, trump = self.players[player_turn].choose_bidding(self.bidding_history)
-            bidding = {'contracts': contract, 'trump': trump}
-            self.bidding_history.append(bidding)
-            if contract != 'pass':
-                self.bidding = bidding
-                bidding_team = self.teams_id[self.players[player_turn].name]
-                passed = 4 if contract == 'generale' else 1
+            # Ask the actual player to bid
+            actual_player = self.players[player_turn]
+            if actual_player.get_type() == 'Human':
+                contract, trump = self.gui.choose_bidding(self.bidding)
+            else:
+                contract, trump = actual_player.choose_bidding(self.bidding, self.previous_bidding)
+                self.gui.update_bidding(actual_player.get_name(), [contract, trump])
+            # Check the bidding value
+            if contract not in range(12):
+                raise ValueError("[BIDDING.PY] The contract index must be in [0:11].")
+            if trump not in range(6):
+                raise ValueError("[BIDDING.PY] The trump index must be in [0:5].")
+            # Update bidding and passed counter
+            self.previous_bidding.append([contract, trump])
+            if contract != 0:   # The player doesn't pass
+                self.bidding = [contract, trump]
+                bidding_team = self.teams_id[actual_player.get_name()]
+                passed = 4 if contract == len(CONTRACTS) else 1     # All the other should pass if "generale"
             else:
                 passed += 1
+            # Next player to bid
             player_turn = (player_turn + 1) % 4
         return self.bidding, bidding_team
+
+    def __str__(self):
+        if self.bidding[0] is None:
+            return 'None'
+        else:
+            return "{} {}".format(CONTRACTS[self.bidding[0]], TRUMPS[self.bidding[1]])
+
+    def __repr__(self):
+        return str(self)

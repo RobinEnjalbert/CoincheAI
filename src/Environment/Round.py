@@ -2,6 +2,7 @@
 
 from constants import *
 
+
 class Round:
     """
     Round class: A round is composed of 8 turns.

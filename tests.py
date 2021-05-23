@@ -5,7 +5,7 @@ import unittest
 from src.Environment.Card import Card
 from src.Environment.Deck import Deck
 from src.Environment.Hand import Hand
-from src.Environment.Player import Player
+from src.Environment.Players.Player import Player
 from src.Environment.Team import Team
 
 
@@ -17,8 +17,8 @@ class TestCard(unittest.TestCase):
     def test_create_card(self):
         """ Test correct card creation """
         card = Card(0, 0)
-        self.assertEqual(card.getValue(), 0)
-        self.assertEqual(card.getColor(), 0)
+        self.assertEqual(card.get_value(), 0)
+        self.assertEqual(card.get_color(), 0)
 
     def test_create_card_wrong_value(self):
         """ Test card creation with wrong value """
@@ -60,18 +60,18 @@ class TestDeck(unittest.TestCase):
     def test_create_deck(self):
         """ Test deck creation """
         deck = Deck()
-        self.assertEqual(len(deck.cardList), 32)
-        self.assertEqual(deck.cardList[0].getValue(), 0)
-        self.assertEqual(deck.cardList[0].getColor(), 0)
-        self.assertEqual(deck.cardList[-1].getValue(), 7)
-        self.assertEqual(deck.cardList[-1].getColor(), 3)
+        self.assertEqual(len(deck.__cards), 32)
+        self.assertEqual(deck.__cards[0].get_value(), 0)
+        self.assertEqual(deck.__cards[0].get_color(), 0)
+        self.assertEqual(deck.__cards[-1].get_value(), 7)
+        self.assertEqual(deck.__cards[-1].get_color(), 3)
 
     def test_shuffle_deck(self):
         """ Test deck shuffle """
         deck = Deck()
-        previous_deck = deck.cardList.copy()
+        previous_deck = deck.__cards.copy()
         deck.shuffle()
-        shuffled_deck = deck.cardList.copy()
+        shuffled_deck = deck.__cards.copy()
         same, i = True, 0
         while same and i < 32:
             if previous_deck[i] != shuffled_deck[i]:
@@ -85,7 +85,7 @@ class TestDeck(unittest.TestCase):
         hands = deck.distribute()
         for hand in hands:
             self.assertEqual(len(hand), 8)
-        self.assertEqual(len(deck.cardList), 0)
+        self.assertEqual(len(deck.__cards), 0)
 
     def test_distribute_deck_wrong_two(self):
         """ Test distribution with wrong two value """
@@ -161,7 +161,7 @@ class TestPlayer(unittest.TestCase):
 
     def test_create_player(self):
         player = Player('Player1')
-        self.assertEqual(player.name, 'Player1')
+        self.assertEqual(player.__name, 'Player1')
 
     def test_create_player_wrong_name(self):
         self.assertRaises(TypeError, Player, 1)
@@ -175,9 +175,9 @@ class TestTeam(unittest.TestCase):
     def test_create_team(self):
         player1, player2 = Player('Player1'), Player('Player2')
         team = Team(player1, player2)
-        self.assertEqual(team.players[0].name, player1.name)
-        self.assertEqual(team.players[1].name, player2.name)
-        self.assertEqual(team.score, 0)
+        self.assertEqual(team.players[0].__name, player1.__name)
+        self.assertEqual(team.players[1].__name, player2.__name)
+        self.assertEqual(team.__score, 0)
 
     def test_create_wrong_player_type(self):
         self.assertRaises(AssertionError, Team, 'Player1', Player('Player2'))
@@ -185,16 +185,16 @@ class TestTeam(unittest.TestCase):
 
     def test_add_points(self):
         team = Team(Player('Player1'), Player('Player2'))
-        team.addPoints(20)
-        self.assertEqual(team.score, 20)
+        team.add_score(20)
+        self.assertEqual(team.__score, 20)
 
     def test_add_points_wrong_type(self):
         team = Team(Player('Player1'), Player('Player2'))
-        self.assertRaises(TypeError, team.addPoints, 'zero')
+        self.assertRaises(TypeError, team.add_score, 'zero')
 
     def test_add_points_wrong_value(self):
         team = Team(Player('Player1'), Player('Player2'))
-        self.assertRaises(ValueError, team.addPoints, -1)
+        self.assertRaises(ValueError, team.add_score, -1)
 
 
 if __name__ == '__main__':
