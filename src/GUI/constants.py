@@ -1,33 +1,31 @@
-RES_WIDTH = 1280
-RES_HEIGHT = 720
-SCREEN_RES = (RES_WIDTH, RES_HEIGHT)
-CARD_WIDTH = RES_WIDTH // 12
-CARD_HEIGHT = RES_WIDTH // 8
-CARD_SIZE = (CARD_WIDTH, CARD_HEIGHT)
+# GUI
 FPS = 30
 
-SERVER = ("localhost", 6804)
-RECV_BUFF_SIZE = 512
+# Screen size
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-
-WHITE = (255, 255, 255)
-LIGHTGREY = (191, 191, 191)
-GREY = (127, 127, 127)
-DARKGREY = (63, 63, 63)
-BLACK = (0, 0, 0)
-
+# Cards size
+CARD_WIDTH = SCREEN_WIDTH // 12
+CARD_HEIGHT = SCREEN_WIDTH // 8
+CARD_SIZE = (CARD_WIDTH, CARD_HEIGHT)
+# Cards values
 CARD_VALUES = ('7', '8', '9', '10', 'J', 'Q', 'K', 'A')
 CARD_COLORS = ('C', 'D', 'S', 'H')
-
-margin = 10
-CARD_POSITIONS = {0: {'pair': ((10*i, 0 + margin) for i in range(8)),
-                      'impair': ()},
-                  1: {'pair': ((10*i, 50 + margin) for i in range(8)),
-                      'impair': ()},
-                  2: {'pair': ((10*i, 100 + margin) for i in range(8)),
-                      'impair': ()},
-                  3: {'pair': ((10*i, 150 + margin) for i in range(8)),
-                      'impair': ()}}
+# Cards positions
+margin = CARD_HEIGHT // 3
+x_min = -margin
+x_max = SCREEN_WIDTH - CARD_HEIGHT + margin
+y_min = -margin
+y_max = SCREEN_HEIGHT - CARD_HEIGHT + margin
+CARD_POSITIONS = {0: {'pair': (((i+7.75)*CARD_WIDTH//2, y_max) for i in range(8)),
+                      'impair': (((i+8.25)*CARD_WIDTH//2, y_max) for i in range(7))},
+                  1: {'pair': ((x_min, (i+2.25)*CARD_WIDTH//2) for i in range(8)),
+                      'impair': ((x_min, (i+2.75)*CARD_WIDTH//2) for i in range(8))},
+                  2: {'pair': (((i+7.75)*CARD_WIDTH//2, y_min) for i in range(8)),
+                      'impair': (((i+8.25)*CARD_WIDTH//2, y_min) for i in range(7))},
+                  3: {'pair': ((x_max, (i+2.25)*CARD_WIDTH//2) for i in range(8)),
+                      'impair': ((x_max, (i+2.75)*CARD_WIDTH//2) for i in range(8))}}
+PLAYER_CLICK = {'pair': {},
+                'impair': {}}

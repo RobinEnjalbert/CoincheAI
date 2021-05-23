@@ -1,7 +1,6 @@
-import pygame
-from pygame.locals import *
-from constants import *
 import os
+import pygame
+from .constants import *
 
 
 class Collection:
@@ -10,7 +9,7 @@ class Collection:
         img_path = os.path.realpath(os.path.dirname(__file__) + '../../../images/')
         # Background
         img = pygame.image.load(os.path.join(img_path, 'background.png'))
-        self.background = pygame.transform.smoothscale(img, SCREEN_RES).convert()
+        self.background = pygame.transform.smoothscale(img, SCREEN_SIZE).convert()
         # Cards back
         img = pygame.image.load(os.path.join(img_path, 'back.png'))
         self.back = pygame.transform.smoothscale(img, CARD_SIZE).convert_alpha()
