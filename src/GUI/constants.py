@@ -29,3 +29,42 @@ CARD_POSITIONS = {0: {'pair': (((i+7.75)*CARD_WIDTH//2, y_max) for i in range(8)
                       'impair': ((x_max, (i+2.75)*CARD_WIDTH//2) for i in range(8))}}
 PLAYER_CLICK = {'pair': {},
                 'impair': {}}
+
+# Colors
+WHITE = (255, 255, 255)
+LIGHTGREY = (191, 191, 191)
+GREY = (127, 127, 127)
+DARKGREY = (63, 63, 63)
+BLACK = (0, 0, 0)
+
+# Bidding
+CONTRACTS = ('pass', '80', '90', '100', '110', '120', '130', '140', '150', '160', 'Capot', 'Generale')
+TRUMPS = ('Club', 'Diamond', 'Heart', 'Spade', 'AT', 'NT')
+# Bidding window: positions, width, height
+BID_POSITION = (SCREEN_WIDTH * 1 / 3, SCREEN_HEIGHT * 1 / 3)
+BID_SIZE = (SCREEN_WIDTH * 1 / 3, SCREEN_HEIGHT * 1 / 3)
+# Bidding contracts
+CONT_WIDTH, CONT_HEIGHT = BID_SIZE[0] * 1 / 8, BID_SIZE[1] * 1 / 6
+CONT_X_MARGIN, CONT_Y_MARGIN = CONT_WIDTH * 2 / 7, CONT_HEIGHT * 1 / 3
+CONT_POSITION = ((BID_POSITION[0] + 1*CONT_X_MARGIN + 0*CONT_WIDTH, BID_POSITION[1] + 1*CONT_Y_MARGIN + 0*CONT_HEIGHT),
+                 (BID_POSITION[0] + 2*CONT_X_MARGIN + 1*CONT_WIDTH, BID_POSITION[1] + 1*CONT_Y_MARGIN + 0*CONT_HEIGHT),
+                 (BID_POSITION[0] + 3*CONT_X_MARGIN + 2*CONT_WIDTH, BID_POSITION[1] + 1*CONT_Y_MARGIN + 0*CONT_HEIGHT),
+                 (BID_POSITION[0] + 4*CONT_X_MARGIN + 3*CONT_WIDTH, BID_POSITION[1] + 1*CONT_Y_MARGIN + 0*CONT_HEIGHT),
+                 (BID_POSITION[0] + 5*CONT_X_MARGIN + 4*CONT_WIDTH, BID_POSITION[1] + 1*CONT_Y_MARGIN + 0*CONT_HEIGHT),
+                 (BID_POSITION[0] + 6*CONT_X_MARGIN + 5*CONT_WIDTH, BID_POSITION[1] + 1*CONT_Y_MARGIN + 0*CONT_HEIGHT),
+                 (BID_POSITION[0] + 1*CONT_X_MARGIN + 0*CONT_WIDTH, BID_POSITION[1] + 2*CONT_Y_MARGIN + 1*CONT_HEIGHT),
+                 (BID_POSITION[0] + 2*CONT_X_MARGIN + 1*CONT_WIDTH, BID_POSITION[1] + 2*CONT_Y_MARGIN + 1*CONT_HEIGHT),
+                 (BID_POSITION[0] + 3*CONT_X_MARGIN + 2*CONT_WIDTH, BID_POSITION[1] + 2*CONT_Y_MARGIN + 1*CONT_HEIGHT),
+                 (BID_POSITION[0] + 4*CONT_X_MARGIN + 3*CONT_WIDTH, BID_POSITION[1] + 2*CONT_Y_MARGIN + 1*CONT_HEIGHT),
+                 (BID_POSITION[0] + 6*CONT_X_MARGIN + 4*CONT_WIDTH, BID_POSITION[1] + 2*CONT_Y_MARGIN + 1*CONT_HEIGHT))
+CONT_SIZE = ((CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH, CONT_HEIGHT),
+             (CONT_WIDTH + CONT_X_MARGIN, CONT_HEIGHT),
+             (2*CONT_WIDTH, CONT_HEIGHT))

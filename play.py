@@ -15,5 +15,5 @@ if __name__ == '__main__':
                 continue_jeu = False
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    print(event.pos)
+                    gui.choose_bidding([1,1])
     pygame.quit()

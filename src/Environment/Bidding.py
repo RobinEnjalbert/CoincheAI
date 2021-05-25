@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-from constants import CONTRACTS, TRUMPS
+from .constants import CONTRACTS, TRUMPS
 
 
 class Bidding:

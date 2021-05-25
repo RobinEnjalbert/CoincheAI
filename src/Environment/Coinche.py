@@ -1,9 +1,9 @@
 # -*- coding: utf8 -*-
 
 from src.Environment.Players.Player import Player
-from Team import Team
-from Deck import Deck
-from Bidding import Bidding
+from .Team import Team
+from .Deck import Deck
+from .Bidding import Bidding
 
 import random
 
