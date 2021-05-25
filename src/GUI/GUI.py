@@ -15,6 +15,7 @@ class GUI:
         self.images = Collection()
         self.font = pygame.font.SysFont("Arial", 30)
         self.show_background()
+        self.contract_clicked = False
 
     def show_background(self):
         self.display.blit(self.images.background, (0, 0))
@@ -36,31 +37,43 @@ class GUI:
         pygame.display.update()
 
     def choose_bidding(self, bidding):
-        # TODO
-        contract, color = bidding[0], bidding[1]
+        prev_contract, trump = bidding[0], bidding[1]
+        contract = prev_contract
         # 1) Display the values and trumps
-        contract_buttons = self.show_bidding(contract)
+        contract_buttons = self.show_bidding_window(prev_contract)
+        contract_box = pygame.Rect(CONTRACT_BOX)
         # 2) While no choice, wait for player validation
         validation = False
-        """while not validation:
+        while not validation:
             for event in pygame.event.get():
                 if event.type == MOUSEBUTTONDOWN:
-                    pointer = event.pos  # (x, y) location of pointer
-                    for i in range(len(contract_buttons)):
-                        b = contract_buttons[i]
-                        if b.collidepoint(pointer):
-                            print(CONTRACTS[i+1])
-                            break"""
+                    pointer = event.pos
+                    # Click on contract
+                    if contract_box.collidepoint(pointer):
+                        contract = self.click_contract(pointer, contract_buttons, prev_contract, contract)
+                        if contract is not None:
+                            print(CONTRACTS[contract + 1])
+                    # Click on trump
+                    # Todo
+                    # Click on validation button
+                    # Todo
+        return contract, trump
 
-    def show_bidding(self, contract):
+    def show_bidding_window(self, contract):
         # Draw window
         pygame.draw.rect(self.display, WHITE, BID_POSITION + BID_SIZE)
         # Draw contracts
         contracts_buttons = []
         for i in range(11):
-            b = pygame.draw.rect(self.display, LIGHTGREY, CONT_POSITION[i] + CONT_SIZE[i])
+            color = LIGHTGREY if contract is None or i > contract else DARKGREY
+            b = pygame.draw.rect(self.display, color, CONT_POSITION[i] + CONT_SIZE[i])
             self.set_contract_text(b, i)
             contracts_buttons.append(b)
+        self.contract_clicked = False
+        # Draw trumps
+        # Todo
+        # Draw Coinche, Validate, Pass
+        # Todo
         # Render
         pygame.display.update()
         return contracts_buttons
@@ -71,6 +84,18 @@ class GUI:
         x_t, y_t = (button.width - text.get_width()) / 2, (button.height - text.get_height()) / 2
         self.display.blit(text, (CONT_POSITION[idx][0] + x_t, CONT_POSITION[idx][1] + y_t))
 
-    def update_bidding(self, player_name, bidding):
-        # TODO
-        pass
+    def click_contract(self, pointer, buttons, prev_contract, contract):
+        for i in range(len(buttons)):
+            b = buttons[i]
+            if b.collidepoint(pointer):
+                if prev_contract is None or i > prev_contract:
+                    pygame.draw.rect(self.display, GREY, CONT_POSITION[i] + CONT_SIZE[i])
+                    self.set_contract_text(buttons[i], i)
+                    if self.contract_clicked:
+                        pygame.draw.rect(self.display, LIGHTGREY, CONT_POSITION[contract] + CONT_SIZE[contract])
+                        self.set_contract_text(buttons[contract], contract)
+                    self.contract_clicked = True
+                    contract = i
+                    pygame.display.update()
+                break
+        return contract
