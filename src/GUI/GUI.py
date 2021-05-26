@@ -41,9 +41,10 @@ class GUI:
         prev_contract, trump = bidding[0], bidding[1]
         contract = prev_contract
         # 1) Display the values and trumps
-        contract_buttons, trump_buttons = self.show_bidding_window(prev_contract)
+        contract_buttons, trump_buttons, validate_buttons = self.show_bidding_window(prev_contract)
         contract_box = pygame.Rect(CONTRACT_BOX)
         trump_box = pygame.Rect(TRUMP_BOX)
+        validate_box = pygame.Rect(VAL_BOX)
         # 2) While no choice, wait for player validation
         validation = False
         while not validation:
@@ -53,15 +54,17 @@ class GUI:
                     # Click on contract
                     if contract_box.collidepoint(pointer):
                         contract = self.click_contract(pointer, contract_buttons, prev_contract, contract)
-                        if contract is not None:
-                            print(CONTRACTS[contract + 1])
                     # Click on trump
                     elif trump_box.collidepoint(pointer):
                         trump = self.click_trump(pointer, trump_buttons, trump)
-                        if trump is not None:
-                            print(TRUMPS[trump])
                     # Click on validation button
-                    # Todo
+                    elif validate_box.collidepoint(pointer):
+                        val = self.click_validate(pointer, validate_buttons)
+                        if val is not None:
+                            validation = True
+                            if val == 0:
+                                contract, trump = 0, None
+        print(CONTRACTS[contract + 1], TRUMPS[trump])
         return contract, trump
 
     def show_bidding_window(self, contract):
@@ -83,13 +86,16 @@ class GUI:
             trump_buttons.append(b)
         self.trump_clicked = False
         # Draw Coinche, Validate, Pass
-        # Todo
+        validate_buttons = []
+        for i in range(3):
+            b = pygame.draw.rect(self.display, LIGHTGREY, VAL_POSITION[i] + VAL_SIZE[i])
+            self.set_validate_text(b, i)
+            validate_buttons.append(b)
         # Render
         pygame.display.update()
-        return contracts_buttons, trump_buttons
+        return contracts_buttons, trump_buttons, validate_buttons
 
     def set_contract_text(self, button, idx):
-        # Center the text in the button
         text = self.font.render(CONTRACTS[idx + 1], True, BLACK)
         x_t, y_t = self.center_text(button, text)
         self.display.blit(text, (CONT_POSITION[idx][0] + x_t, CONT_POSITION[idx][1] + y_t))
@@ -99,13 +105,18 @@ class GUI:
         x_t, y_t = self.center_text(button, text)
         self.display.blit(text, (TRUMP_POSITION[idx][0] + x_t, TRUMP_POSITION[idx][1] + y_t))
 
+    def set_validate_text(self, button, idx):
+        text = self.font.render(VAL[idx], True, BLACK)
+        x_t, y_t = self.center_text(button, text)
+        self.display.blit(text, (VAL_POSITION[idx][0] + x_t, VAL_POSITION[idx][1] + y_t))
+
     def center_text(self, button, text):
         return (button.width - text.get_width()) / 2, (button.height - text.get_height()) / 2
 
     def click_contract(self, pointer, buttons, prev_contract, contract):
         for i in range(len(buttons)):
             b = buttons[i]
-            if b.collidepoint(pointer):
+            if b.collidepoint(pointer) and i != contract:
                 if prev_contract is None or i > prev_contract:
                     pygame.draw.rect(self.display, GREY, CONT_POSITION[i] + CONT_SIZE[i])
                     self.set_contract_text(buttons[i], i)
@@ -121,7 +132,7 @@ class GUI:
     def click_trump(self, pointer, buttons, trump):
         for i in range(len(buttons)):
             b = buttons[i]
-            if b.collidepoint(pointer):
+            if b.collidepoint(pointer) and i != trump:
                 pygame.draw.rect(self.display, GREY, TRUMP_POSITION[i] + TRUMP_SIZE[i])
                 self.set_trump_text(buttons[i], i)
                 if self.trump_clicked:
@@ -132,3 +143,13 @@ class GUI:
                 pygame.display.update()
                 break
         return trump
+
+    def click_validate(self, pointer, buttons):
+        validation = None
+        if buttons[0].collidepoint(pointer):
+            validation = 0
+        elif buttons[1].collidepoint(pointer) and self.contract_clicked and self.trump_clicked:
+            validation = 1
+        elif buttons[2].collidepoint(pointer):
+            validation = 2
+        return validation
