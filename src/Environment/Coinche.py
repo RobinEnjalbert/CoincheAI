@@ -1,28 +1,28 @@
 # -*- coding: utf8 -*-
 
-from src.Environment.Players.Player import Player
 from .Team import Team
 from .Deck import Deck
 from .Bidding import Bidding
 
 import random
+from pygame.locals import *
 
 
 class Coinche:
 
-    def __init__(self, gui=None):
-        self.gui = gui
+    def __init__(self, players):
         player_names = ['Player0', 'Player1', 'Player2', 'Player3']
-        self.players = [Player(name=name) for name in player_names]
-        self.teams = [Team(self.players[0], self.players[2]), Team(self.players[1], self.players[2])]
+        self.players = [players[i](name=player_names[i]) for i in range(4)]
+        self.teams = [Team(self.players[0], self.players[2]), Team(self.players[1], self.players[3])]
         self.first_player = 0
         self.deck = Deck()
 
-    def play_game(self):
+    def play_game(self, gui):
         self.deck.shuffle()
-        while self.teams[0].get_score() < 1000 and self.teams[1].get_score() < 1000:
+        while self.teams[0].get_score() < 1000 and self.teams[1].get_score() < 1000 and not gui.quitGUI:
             self.distribute_cards()
-            bidding_phase = Bidding(self.players, self.teams, self.first_player, self.gui)
+            gui.show_cards()
+            bidding_phase = Bidding(self.players, self.teams, self.first_player, gui)
             bidding, bidding_team = bidding_phase.play_bidding()
             if bidding_team is None:
                 self.collect_players_cards()
@@ -51,9 +51,3 @@ class Coinche:
         deck0, deck1 = self.teams[0].won_cards, self.teams[1].won_cards
         deck = deck0 + deck1 if bidding_team == 0 else deck1 + deck0
         self.deck.reset(deck)
-
-
-coinche = Coinche()
-coinche.distribute_cards()
-for player in coinche.players:
-    print(player)

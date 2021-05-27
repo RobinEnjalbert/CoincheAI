@@ -2,19 +2,13 @@ import pygame
 from pygame.locals import *
 from src.GUI.GUI import GUI
 from src.Environment.Coinche import Coinche
+from src.Environment.Players.Human import Human
+from src.Environment.Players.Random import Random
 
 
 if __name__ == '__main__':
-    gui = GUI()
-    coinche = Coinche()
-    gui.show_cards(None)
-    continue_jeu = True
-    while continue_jeu:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                continue_jeu = False
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    contract, trump = gui.choose_bidding([3,1])
-                    continue_jeu = False
+    players = [Human, Random, Random, Random]
+    coinche = Coinche(players)
+    gui = GUI(coinche)
+    gui.mainLoop()
     pygame.quit()

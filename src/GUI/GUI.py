@@ -6,23 +6,31 @@ from .constants import *
 
 class GUI:
 
-    def __init__(self):
+    def __init__(self, coinche):
         pygame.init()
+        self.quitGUI = False
+        # Display
         self.resolution = SCREEN_SIZE
         self.res_width, self.res_height = SCREEN_WIDTH, SCREEN_HEIGHT
         self.display = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption('CoincheAI')
+        # Images, font
         self.images = Collection()
         self.font = pygame.font.SysFont("Arial", 30)
         self.show_background()
+        # Coinche
+        self.coinche = coinche
         self.contract_clicked = False
         self.trump_clicked = False
+
+    def mainLoop(self):
+        self.coinche.play_game(self)
 
     def show_background(self):
         self.display.blit(self.images.background, (0, 0))
         pygame.display.flip()
 
-    def show_cards(self, hand):
+    def show_cards(self):
         # Show cards in hand for player 0 (GUI POV)
         positions = CARD_POSITIONS[0]
         for position in positions['pair']:
@@ -153,3 +161,7 @@ class GUI:
         elif buttons[2].collidepoint(pointer):
             validation = 2
         return validation
+
+    def update_bidding(self):
+        # TODO
+        pass

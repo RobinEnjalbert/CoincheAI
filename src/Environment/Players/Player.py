@@ -26,6 +26,9 @@ class Player:
     def get_type(self):
         return self.__type
 
+    def set_type(self, type):
+        self.__type = type
+
     def choose_bidding(self, bidding, bidding_history):
         raise NotImplementedError
 
