@@ -16,8 +16,6 @@ class Bidding:
         self.gui = gui
 
     def play_bidding(self):
-        # TODO: uniform bidding indices
-        # TODO: debug each case
         # TODO: add coinche variable as output
         bidding_team = None
         player_turn = self.first_player
@@ -29,18 +27,18 @@ class Bidding:
                 contract, trump = self.gui.choose_bidding(self.bidding)
             else:
                 contract, trump = actual_player.choose_bidding(self.bidding, self.previous_bidding)
-            self.gui.update_bidding(actual_player.get_name(), [contract, trump])
             # Check the bidding value
             if contract not in range(12):
                 raise ValueError("[BIDDING.PY] The contract index must be in [0:11].")
             if trump not in range(6):
                 raise ValueError("[BIDDING.PY] The trump index must be in [0:5].")
             # Update bidding and passed counter
+            self.gui.update_bidding(actual_player.get_name(), [contract, trump])
             self.previous_bidding.append([contract, trump])
             if contract != 0:   # The player doesn't pass
                 self.bidding = [contract, trump]
                 bidding_team = self.teams_id[actual_player.get_name()]
-                passed = 4 if contract == len(CONTRACTS) else 1     # All the other should pass if "generale"
+                passed = 4 if contract == len(CONTRACTS) - 1 else 1     # All the other should pass if "generale"
             else:
                 passed += 1
             # Next player to bid

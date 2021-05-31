@@ -6,7 +6,7 @@ from .constants import *
 
 class GUI:
 
-    def __init__(self, coinche):
+    def __init__(self, coinche, index_player):
         pygame.init()
         self.quitGUI = False
         # Display
@@ -22,6 +22,9 @@ class GUI:
         self.coinche = coinche
         self.contract_clicked = False
         self.trump_clicked = False
+        self.index_players = [(index_player + i) % 4 for i in range(4)]
+        # Auto start
+        self.mainLoop()
 
     def mainLoop(self):
         self.coinche.play_game(self)
@@ -30,19 +33,27 @@ class GUI:
         self.display.blit(self.images.background, (0, 0))
         pygame.display.flip()
 
-    def show_cards(self):
-        # Show cards in hand for player 0 (GUI POV)
-        positions = CARD_POSITIONS[0]
-        for position in positions['pair']:
-            self.display.blit(self.images.back, position)
-        # Show backs for other players
-        for i in range(1, 4):
-            positions = CARD_POSITIONS[i]
-            for position in positions['pair']:
-                if i == 2:
-                    self.display.blit(self.images.back, position)
-                else:
-                    self.display.blit(pygame.transform.rotate(self.images.back, 90), position)
+    def show_cards(self, player):
+        # Count the number of cards in hand
+        hand = self.coinche.players[player].hand.get()
+        parity = 'pair' if len(hand) % 2 == 0 else 'impair'
+        max_parity = 8 if parity == 'pair' else 7
+        # Get the positions of the cards
+        positions = CARD_POSITIONS[self.index_players[player]][parity]
+        idx_positions = range((max_parity - len(hand)) // 2, (max_parity + len(hand)) // 2)
+        # Show cards in hand for player 0
+        if self.index_players[player] == 0:
+            for i in range(len(hand)):
+                card = hand[i]
+                self.display.blit(self.images.get_card(card.get_color(), card.get_value()), positions[idx_positions[i]])
+        # Show backs without rotation for player 2
+        elif self.index_players[player] == 2:
+            for idx in idx_positions:
+                self.display.blit(self.images.back, positions[idx])
+        # Show backs with rotation for side players
+        else:
+            for idx in idx_positions:
+                self.display.blit(pygame.transform.rotate(self.images.back, 90), positions[idx])
         pygame.display.update()
 
     def choose_bidding(self, bidding):
@@ -71,9 +82,8 @@ class GUI:
                         if val is not None:
                             validation = True
                             if val == 0:
-                                contract, trump = 0, None
-        print(CONTRACTS[contract + 1], TRUMPS[trump])
-        return contract, trump
+                                contract, trump = 0, 5
+        return contract + 1, trump
 
     def show_bidding_window(self, contract):
         # Draw window
@@ -162,6 +172,8 @@ class GUI:
             validation = 2
         return validation
 
-    def update_bidding(self):
-        # TODO
-        pass
+    def update_bidding(self, actual_player, contract):
+        self.coinche.sort_all_hands(contract[1])
+        self.show_cards(self.index_players.index(0))
+        # Show the contract aside the actual player
+        # Todo

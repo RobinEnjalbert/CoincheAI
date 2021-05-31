@@ -38,9 +38,9 @@ class Hand:
             hand = np.array(self.__hand)
             return hand[self.__available].tolist()
 
-    def sort(self, trump='NT'):
-        if trump not in TRUMPS:
-            raise ValueError("[HAND.PY] Given trump '{}' to sort hand does not exist.".format(trump))
+    def sort(self, trump=5):
+        if trump not in range(len(TRUMPS)):
+            raise ValueError("[HAND.PY] Given trump index '{}' to sort hand does not exist.".format(trump))
         sorted_hand = []
         # Sort by color
         color_sort = {CARD_COLORS[0]: [], CARD_COLORS[1]: [], CARD_COLORS[2]: [], CARD_COLORS[3]: []}
@@ -50,7 +50,7 @@ class Hand:
         # Sort each color by value
         for k in color_sort.keys():
             color = color_sort[k]
-            strength = STRENGTH['basic'] if k != trump else STRENGTH['trump']
+            strength = STRENGTH['basic'] if k != TRUMPS[trump] else STRENGTH['trump']
             color_strength = [strength[card.get_value()] for card in color]
             for _ in range(len(color)):
                 idx = color_strength.index(min(color_strength))

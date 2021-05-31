@@ -21,5 +21,5 @@ class Collection:
                 img = pygame.image.load(os.path.join(img_path, filename))
                 self.front[color][value] = pygame.transform.smoothscale(img, CARD_SIZE).convert_alpha()
 
-    def getCard(self, color, value):
+    def get_card(self, color, value):
         return self.front[color][value]
