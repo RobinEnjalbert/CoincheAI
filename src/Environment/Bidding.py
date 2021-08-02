@@ -33,7 +33,7 @@ class Bidding:
             if trump not in range(6):
                 raise ValueError("[BIDDING.PY] The trump index must be in [0:5].")
             # Update bidding and passed counter
-            self.gui.update_bidding(actual_player.get_name(), [contract, trump])
+            self.gui.update_bidding(player_turn, [contract, trump])
             self.previous_bidding.append([contract, trump])
             if contract != 0:   # The player doesn't pass
                 self.bidding = [contract, trump]

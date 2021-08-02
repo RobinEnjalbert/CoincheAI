@@ -19,16 +19,27 @@ x_min = -margin
 x_max = SCREEN_WIDTH - CARD_HEIGHT + margin
 y_min = -margin
 y_max = SCREEN_HEIGHT - CARD_HEIGHT + margin
-CARD_POSITIONS = {0: {'pair':   [((i+7.75)*CARD_WIDTH//2, y_max) for i in range(8)],
-                      'impair': [((i+8.25)*CARD_WIDTH//2, y_max) for i in range(7)]},
-                  1: {'pair':   [(x_min, (i+2.25)*CARD_WIDTH//2) for i in range(8)],
-                      'impair': [(x_min, (i+2.75)*CARD_WIDTH//2) for i in range(8)]},
-                  2: {'pair':   [((i+7.75)*CARD_WIDTH//2, y_min) for i in range(8)],
-                      'impair': [((i+8.25)*CARD_WIDTH//2, y_min) for i in range(7)]},
-                  3: {'pair':   [(x_max, (i+2.25)*CARD_WIDTH//2) for i in range(8)],
-                      'impair': [(x_max, (i+2.75)*CARD_WIDTH//2) for i in range(8)]}}
+x0 = [(SCREEN_WIDTH - 4.5*CARD_WIDTH)//2, ((SCREEN_WIDTH - 4*CARD_WIDTH)//2)]
+x2 = [(SCREEN_WIDTH - 2.75*CARD_WIDTH)//2, ((SCREEN_WIDTH - 2.5*CARD_WIDTH)//2)]
+y1 = [(SCREEN_HEIGHT - 2.75*CARD_WIDTH)//2, (SCREEN_HEIGHT - 2.5*CARD_WIDTH)//2]
+CARD_POSITIONS = {0: {'pair':   [(x0[0]+i*CARD_WIDTH//2, y_max) for i in range(8)],
+                      'impair': [(x0[1]+i*CARD_WIDTH//2, y_max) for i in range(7)]},
+                  1: {'pair':   [(x_min, y1[0]+i*CARD_WIDTH//4) for i in range(8)],
+                      'impair': [(x_min, y1[1]+i*CARD_WIDTH//4) for i in range(8)]},
+                  2: {'pair':   [(x2[0]+i*CARD_WIDTH//4, y_min) for i in range(8)],
+                      'impair': [(x2[1]+i*CARD_WIDTH//4, y_min) for i in range(7)]},
+                  3: {'pair':   [(x_max, y1[0]+i*CARD_WIDTH//4) for i in range(8)],
+                      'impair': [(x_max, y1[1]+i*CARD_WIDTH//4) for i in range(8)]}}
 PLAYER_CLICK = {'pair': {},
                 'impair': {}}
+
+# Players log
+PLAYER_LOG_SIZE = (1.5*CARD_WIDTH, 0.75*CARD_WIDTH)
+PLAYER_LOG_POSITIONS = [(CARD_POSITIONS[0]['pair'][-1][0] + 1.1 * CARD_WIDTH, SCREEN_HEIGHT-PLAYER_LOG_SIZE[1]),
+                        (0, CARD_POSITIONS[1]['pair'][-1][1] + 1.1 * CARD_WIDTH),
+                        (CARD_POSITIONS[2]['pair'][-1][0] + 1.1 * CARD_WIDTH, 0),
+                        (SCREEN_WIDTH-PLAYER_LOG_SIZE[0], CARD_POSITIONS[3]['pair'][0][1] - PLAYER_LOG_SIZE[1]
+                         - 0.1 * CARD_WIDTH)]
 
 # Colors
 WHITE = (255, 255, 255)

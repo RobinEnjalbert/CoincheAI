@@ -32,6 +32,23 @@ class GUI:
     def show_background(self):
         self.display.blit(self.images.background, (0, 0))
         pygame.display.flip()
+        self.show_players_log()
+
+    def show_players_log(self, actual_player=None, contract=None):
+        print(actual_player, contract)
+        for i in range(4):
+            if actual_player is None or i == actual_player:
+                rect = pygame.draw.rect(self.display, WHITE, PLAYER_LOG_POSITIONS[i] + PLAYER_LOG_SIZE)
+                # Player name
+                text = self.font.render(f"Player {i+1}", True, BLACK)
+                x_t, y_t = (rect.width - text.get_width()) / 2, (0.5*rect.height - text.get_height()) / 2
+                self.display.blit(text, (PLAYER_LOG_POSITIONS[i][0] + x_t, PLAYER_LOG_POSITIONS[i][1] + y_t))
+                # Player bidding
+                text_str = '-' if actual_player is None else CONTRACTS[contract[0]] + ' ' + TRUMPS[contract[1]]
+                text = self.font.render(text_str, True, BLACK)
+                x_t = (rect.width - text.get_width()) / 2
+                y_t = 0.5 * rect.height + (0.5 * rect.height - text.get_height()) / 2
+                self.display.blit(text, (PLAYER_LOG_POSITIONS[i][0] + x_t, PLAYER_LOG_POSITIONS[i][1] + y_t))
 
     def show_cards(self, player):
         # Count the number of cards in hand
@@ -176,4 +193,5 @@ class GUI:
         self.coinche.sort_all_hands(contract[1])
         self.show_cards(self.index_players.index(0))
         # Show the contract aside the actual player
-        # Todo
+        self.show_players_log(actual_player, contract)
+        # TODO: handle special cases
