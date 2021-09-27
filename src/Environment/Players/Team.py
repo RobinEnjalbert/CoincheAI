@@ -30,8 +30,7 @@ class Team:
         self.__score += points
 
     def __str__(self):
-        return "Players names: {}, {}\nScore: {}".format(self.players[0].get_name(), self.players[1].get_name(),
-                                                         str(self.__score))
+        return f"Players names: {self.players[0].get_name()}, {self.players[1].get_name()}\nScore: {str(self.__score)}"
 
     def __repr__(self):
         return str(self)

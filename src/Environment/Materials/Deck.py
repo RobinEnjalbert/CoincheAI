@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 
 import random
+
 from src.Environment.Materials.Card import Card
 
 
@@ -19,6 +20,9 @@ class Deck:
 
     def __init__(self):
         self.__cards = [Card(v_idx, c_idx) for c_idx in range(4) for v_idx in range(8)]
+
+    def get(self):
+        return self.__cards.copy()
 
     def shuffle(self):
         random.shuffle(self.__cards)

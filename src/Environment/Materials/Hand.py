@@ -1,8 +1,9 @@
 # -*- coding: utf8 -*-
 
 import numpy as np
-from src.Environment.constants import STRENGTH, CARD_COLORS, TRUMPS
+
 from src.Environment.Materials.Card import Card
+from src.Environment.constants import STRENGTH, CARD_COLORS, TRUMPS
 
 
 class Hand:
@@ -27,16 +28,16 @@ class Hand:
         if not isinstance(cards, list) or not isinstance(cards[0], Card):
             raise TypeError("[HAND.PY] The hand must be a list of Cards")
         if len(cards) != 8:
-            raise ValueError("[HAND.PY] The given hand has {} cards while 8 are required.".format(len(cards)))
+            raise ValueError(f"[HAND.PY] The given hand has {len(cards)} cards while 8 are required.")
         self.__hand = cards
         self.__available = [i for i in range(8)]
 
     def get(self, full=False):
         if full:
-            return self.__hand
+            return self.__hand.copy()
         else:
             hand = np.array(self.__hand)
-            return hand[self.__available].tolist()
+            return hand[self.__available].tolist().copy()
 
     def sort(self, trump=5):
         if trump not in range(len(TRUMPS)):

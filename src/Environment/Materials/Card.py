@@ -34,8 +34,7 @@ class Card:
         return self.__color
 
     def __str__(self):
-        return "{} of {}".format(CARD_VALUES[self.__value],
-                                 CARD_COLORS[self.__color])
+        return f"{CARD_VALUES[self.__value]} of {CARD_COLORS[self.__color]}"
 
     def __repr__(self):
         return str(self)
@@ -47,5 +46,4 @@ class Card:
         return same_value and same_color
 
     def __ne__(self, card):
-        assert isinstance(card, Card), "[CARD.PY] The card must be an object of type Card."
         return not (self.__eq__(card))
