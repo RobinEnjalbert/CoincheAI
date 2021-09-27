@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-from src.Environment.Hand import Hand
+from src.Environment.Materials.Hand import Hand
 
 
 class Player:

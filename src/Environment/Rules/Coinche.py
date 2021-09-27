@@ -1,11 +1,10 @@
 # -*- coding: utf8 -*-
 
-from .Team import Team
-from .Deck import Deck
-from .Bidding import Bidding
+from src.Environment.Players.Team import Team
+from src.Environment.Materials.Deck import Deck
+from src.Environment.Rules.Bidding import Bidding
 
 import random
-from pygame.locals import *
 
 
 class Coinche:

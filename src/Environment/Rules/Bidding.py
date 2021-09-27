@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-from .constants import CONTRACTS, TRUMPS
+from src.Environment.constants import CONTRACTS, TRUMPS
 
 
 class Bidding:

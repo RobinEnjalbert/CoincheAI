@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
 import random
-from .Card import Card
+from src.Environment.Materials.Card import Card
 
 
 class Deck:

@@ -1,7 +1,6 @@
 import pygame
-from pygame.locals import *
 from src.GUI.GUI import GUI
-from src.Environment.Coinche import Coinche
+from src.Environment.Rules.Coinche import Coinche
 from src.Environment.Players.Human import Human
 from src.Environment.Players.Random import Random
 

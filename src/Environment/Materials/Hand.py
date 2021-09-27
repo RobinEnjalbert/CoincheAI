@@ -1,8 +1,8 @@
 # -*- coding: utf8 -*-
 
 import numpy as np
-from .constants import STRENGTH, CARD_COLORS, TRUMPS
-from .Card import Card
+from src.Environment.constants import STRENGTH, CARD_COLORS, TRUMPS
+from src.Environment.Materials.Card import Card
 
 
 class Hand:

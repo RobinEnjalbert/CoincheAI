@@ -2,11 +2,11 @@
 
 import unittest
 
-from src.Environment.Card import Card
-from src.Environment.Deck import Deck
-from src.Environment.Hand import Hand
+from src.Environment.Materials.Card import Card
+from src.Environment.Materials.Deck import Deck
+from src.Environment.Materials.Hand import Hand
 from src.Environment.Players.Player import Player
-from src.Environment.Team import Team
+from src.Environment.Players.Team import Team
 
 
 class TestCard(unittest.TestCase):
